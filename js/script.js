@@ -173,7 +173,9 @@ window.addEventListener('DOMContentLoaded', event => {
 
 		//Обработка ошибок - fetch не выдает ошибки при отсутствии данных или подключения к базе
 		// throw -выкидывает ошибку с функции
-		if (!res.ok) throw new Error(`Dont fetch ${url} status: ${res.status}`);
+		if (!res.ok) {
+			throw new Error(`Dont fetch ${url} status: ${res.status}`);
+		}
 
 		return await res.json();
 	};
@@ -427,14 +429,18 @@ window.addEventListener('DOMContentLoaded', event => {
 		dots[thisSlide - 1].style.opacity = 1;
 	};
 
+	function withoutLetters(string) {
+		return +string.replace(/\D/g, '');
+	}
+
 	showIndexText(slides.length, totalSlides);
 	showIndexText(thisSlide, currentSlide);
 	nextSlide.addEventListener('click', () => {
-		if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+		if (offset == withoutLetters(width) * (slides.length - 1)) {
 			offset = 0;
 		} else {
 			//Смещение на ширину области показа слайдера
-			offset += +width.slice(0, width.length - 2);
+			offset += withoutLetters(width);
 		}
 		if (thisSlide == slides.length) {
 			thisSlide = 1;
@@ -447,10 +453,10 @@ window.addEventListener('DOMContentLoaded', event => {
 
 	prevSlide.addEventListener('click', () => {
 		if (offset == 0) {
-			offset = +width.slice(0, width.length - 2) * (slides.length - 1);
+			offset = withoutLetters(width) * (slides.length - 1);
 		} else {
 			//Смещение на ширину области показа слайдера
-			offset -= +width.slice(0, width.length - 2);
+			offset -= withoutLetters(width);
 		}
 		if (thisSlide == 1) {
 			thisSlide = slides.length;
@@ -465,7 +471,7 @@ window.addEventListener('DOMContentLoaded', event => {
 		dot.addEventListener('click', event => {
 			const slideTo = event.target.getAttribute('data-slide-to');
 			thisSlide = slideTo;
-			offset = +width.slice(0, width.length - 2) * (slideTo - 1);
+			offset = withoutLetters(width) * (slideTo - 1);
 			activateSlide(offset);
 		});
 	});
@@ -501,4 +507,88 @@ window.addEventListener('DOMContentLoaded', event => {
 	// nextSlide.addEventListener('click', () => {
 	// 	showSlide(++thisSlide);
 	// });
+
+	//* Калькулятор калорий
+
+	const calculatingResult = document.querySelector('.calculating__result span');
+	let sex = 'female',
+		height,
+		weight,
+		age,
+		action = 1.375;
+
+	/**
+	 * Определение дневной нормы калорий по данным с формы
+	 */
+	const calcCalories = () => {
+		if (sex && height && weight && age && action) {
+			if (sex === 'female') {
+				calculatingResult.textContent = Math.round(
+					(447.6 + 9.2 * weight + 3.1 * height - 4.3 * age) * action
+				);
+			} else {
+				calculatingResult.textContent = Math.round(
+					(88.36 + 13.4 * weight + 4.8 * height - 5.7 * age) * action
+				);
+			}
+		} else {
+			calculatingResult.textContent = '____';
+			return;
+		}
+	};
+
+	calcCalories();
+
+	/**
+	 * Получение статических данных с элементов
+	 * @param {string} parrent - селектор родителя элементов
+	 * @param {string} activeClass - класс активности для элементов
+	 */
+	const getStaticInformation = (parren, activeClass = 'calculating__choose-item_active') => {
+		const elements = document.querySelectorAll(`${parren} div`);
+		document.querySelector(parren).addEventListener('click', event => {
+			if (event.target && event.target.classList.contains('calculating__choose-item')) {
+				if (event.target.getAttribute('data-action')) {
+					action = +event.target.getAttribute('data-action');
+				} else {
+					sex = event.target.getAttribute('id');
+				}
+				elements.forEach(element => {
+					element.classList.remove(activeClass);
+				});
+				event.target.classList.add(activeClass);
+				calcCalories();
+			}
+		});
+	};
+
+	/**
+	 * Получение введенных данных пользователем
+	 *@param {string} selector - селектор отслеживаемого элемента
+	 */
+	const getInputInformation = selector => {
+		const input = document.querySelector(selector);
+		input.addEventListener('input', event => {
+			switch (input.getAttribute('id')) {
+				case 'height':
+					height = +input.value;
+					break;
+				case 'weight':
+					weight = +input.value;
+					break;
+				case 'age':
+					age = +input.value;
+					break;
+				default:
+					break;
+			}
+			calcCalories();
+		});
+	};
+
+	getStaticInformation('#gender');
+	getStaticInformation('.calculating__choose_big');
+	getInputInformation('#height');
+	getInputInformation('#weight');
+	getInputInformation('#age');
 });
