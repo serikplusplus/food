@@ -546,8 +546,9 @@ window.addEventListener('DOMContentLoaded', event => {
 	 */
 	const getStaticInformation = (parren, activeClass = 'calculating__choose-item_active') => {
 		const elements = document.querySelectorAll(`${parren} div`);
-		document.querySelector(parren).addEventListener('click', event => {
-			if (event.target && event.target.classList.contains('calculating__choose-item')) {
+
+		elements.forEach(element => {
+			element.addEventListener('click', event => {
 				if (event.target.getAttribute('data-action')) {
 					action = +event.target.getAttribute('data-action');
 				} else {
@@ -558,7 +559,7 @@ window.addEventListener('DOMContentLoaded', event => {
 				});
 				event.target.classList.add(activeClass);
 				calcCalories();
-			}
+			});
 		});
 	};
 
