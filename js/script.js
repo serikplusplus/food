@@ -511,11 +511,21 @@ window.addEventListener('DOMContentLoaded', event => {
 	//* Калькулятор калорий
 
 	const calculatingResult = document.querySelector('.calculating__result span');
-	let sex = 'female',
-		height,
-		weight,
-		age,
+	let sex, height, weight, age, action;
+
+	//Установка значение по умолчанию с локального хранилища
+	if (localStorage.getItem('sex')) {
+		sex = localStorage.getItem('sex');
+	} else {
+		sex = 'female';
+		localStorage.setItem('sex', 'female');
+	}
+	if (localStorage.getItem('action')) {
+		action = localStorage.getItem('action');
+	} else {
 		action = 1.375;
+		localStorage.setItem('action', 1.375);
+	}
 
 	/**
 	 * Определение дневной нормы калорий по данным с формы
@@ -541,18 +551,20 @@ window.addEventListener('DOMContentLoaded', event => {
 
 	/**
 	 * Получение статических данных с элементов
-	 * @param {string} parrent - селектор родителя элементов
+	 * @param {string} selector - селектор элементов
 	 * @param {string} activeClass - класс активности для элементов
 	 */
-	const getStaticInformation = (parren, activeClass = 'calculating__choose-item_active') => {
-		const elements = document.querySelectorAll(`${parren} div`);
+	const getStaticInformation = (selector, activeClass) => {
+		const elements = document.querySelectorAll(selector);
 
 		elements.forEach(element => {
 			element.addEventListener('click', event => {
 				if (event.target.getAttribute('data-action')) {
 					action = +event.target.getAttribute('data-action');
+					localStorage.setItem('action', action);
 				} else {
 					sex = event.target.getAttribute('id');
+					localStorage.setItem('sex', sex);
 				}
 				elements.forEach(element => {
 					element.classList.remove(activeClass);
@@ -572,13 +584,13 @@ window.addEventListener('DOMContentLoaded', event => {
 		input.addEventListener('input', event => {
 			switch (input.getAttribute('id')) {
 				case 'height':
-					height = +input.value;
+					input.value = height = withoutLetters(input.value);
 					break;
 				case 'weight':
-					weight = +input.value;
+					input.value = weight = withoutLetters(input.value);
 					break;
 				case 'age':
-					age = +input.value;
+					input.value = age = withoutLetters(input.value);
 					break;
 				default:
 					break;
@@ -587,8 +599,28 @@ window.addEventListener('DOMContentLoaded', event => {
 		});
 	};
 
-	getStaticInformation('#gender');
-	getStaticInformation('.calculating__choose_big');
+	/**
+	 * Добавление изначальной активности элементам равным значениям из лоального хранилища
+	 * @param {*} selector - селектор элементов
+	 * @param {*} activeClass - класс активности
+	 */
+	const setInitialActivity = (selector, activeClass) => {
+		const items = document.querySelectorAll(selector);
+		items.forEach(item => {
+			item.classList.remove(activeClass);
+			if (
+				item.getAttribute('id') === localStorage.getItem('sex') ||
+				item.getAttribute('data-action') === localStorage.getItem('action')
+			) {
+				item.classList.add(activeClass);
+			}
+		});
+	};
+
+	setInitialActivity('#gender div', 'calculating__choose-item_active');
+	setInitialActivity('.calculating__choose_big div', 'calculating__choose-item_active');
+	getStaticInformation('#gender div', 'calculating__choose-item_active');
+	getStaticInformation('.calculating__choose_big div', 'calculating__choose-item_active');
 	getInputInformation('#height');
 	getInputInformation('#weight');
 	getInputInformation('#age');
