@@ -1,5 +1,13 @@
-function forms(params) {
-	const forms = document.querySelectorAll('form');
+import { closeModal, showModal } from './modal';
+import { postData } from '../services/services';
+
+/**
+ * Модуль форм
+ * @param {*} modalTimerId - - таймер отложеного запуска модального окна
+ * @param {*} formSelector - селектор форм
+ */
+function forms(formSelector, modalTimerId) {
+	const forms = document.querySelectorAll(formSelector);
 	const message = {
 		loading: 'img/1474.gif',
 		success: 'Скоро позвоним',
@@ -11,7 +19,7 @@ function forms(params) {
 	 * @param {*} message
 	 */
 	const showModalThanks = message => {
-		showModal();
+		showModal('.modal', modalTimerId);
 		const modalDialog = document.querySelector('.modal__dialog');
 		modalDialog.classList.add('hide');
 
@@ -24,33 +32,13 @@ function forms(params) {
 		</div>
 		`;
 
-		modal.append(thanksDialog);
+		document.querySelector('.modal').append(thanksDialog);
 
 		setTimeout(() => {
 			thanksDialog.remove();
 			modalDialog.classList.remove('hide');
-			closeModal();
+			closeModal('.modal');
 		}, 4000);
-	};
-
-	/**
-	 * Работа с json сервером - отправка данных
-	 * @param {*} url - адрес взаимодействия
-	 * @param {*} data - данные для отправки
-	 * @returns промис с данными
-	 */
-	const postData = async (url, dat) => {
-		//fetch == promise, res == promise
-		const res = await fetch(url, {
-			//await-ждет выполнения промиса fetch
-			method: 'POST',
-			headers: {
-				'Content-type': 'application/json',
-			},
-			body: dat,
-		});
-		//возвращаем промис для дальнейщего развития дерева проверок
-		return await res.json(); //res=promise res.json=promise
 	};
 
 	/**
@@ -97,4 +85,4 @@ function forms(params) {
 		bindPostData(element);
 	});
 }
-module.exports = forms;
+export default forms;

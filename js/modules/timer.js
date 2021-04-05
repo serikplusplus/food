@@ -1,6 +1,9 @@
-function timer() {
-	const deadline = '2021-05-20';
-
+/**
+ * Модуль таймера обратного отсчета
+ * @param {*} selectorTimer - селектор таймера
+ * @param {*} deadline - дата конца отсчета
+ */
+function timer(selectorTimer, deadline) {
 	/**
 	 * Получение разницы во времени
 	 * @param {*} endtime - конечное время
@@ -50,7 +53,7 @@ function timer() {
 		}
 	};
 
-	setClock('.timer', deadline);
+	setClock(selectorTimer, deadline);
 }
 
-module.exports = timer;
+export default timer;

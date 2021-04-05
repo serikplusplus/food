@@ -1,3 +1,8 @@
+import { withoutLetters } from './sliders';
+
+/**
+ * Модуль калькулятора калорий
+ */
 function calculator() {
 	const calculatingResult = document.querySelector('.calculating__result span');
 	let sex, height, weight, age, action;
@@ -114,4 +119,4 @@ function calculator() {
 	getInputInformation('#weight');
 	getInputInformation('#age');
 }
-module.exports = calculator;
+export default calculator;

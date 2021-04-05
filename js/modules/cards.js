@@ -1,22 +1,9 @@
+import { getData } from '../services/services';
+
+/**
+ * Модуль карточек меню
+ */
 function cards() {
-	/**
-	 * Работа с json сервером - получение данных
-	 * @param {*} url - адрес взаимодействия
-	 * @param {*} data - данные для отправки
-	 * @returns промис с данными
-	 */
-	const getData = async url => {
-		const res = await fetch(url);
-
-		//Обработка ошибок - fetch не выдает ошибки при отсутствии данных или подключения к базе
-		// throw -выкидывает ошибку с функции
-		if (!res.ok) {
-			throw new Error(`Dont fetch ${url} status: ${res.status}`);
-		}
-
-		return await res.json();
-	};
-
 	//Класс создание карточек меню
 	class menuCard {
 		/**
@@ -71,4 +58,4 @@ function cards() {
 		});
 	});
 }
-module.exports = cards;
+export default cards;

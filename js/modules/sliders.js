@@ -1,12 +1,42 @@
-function sliders() {
-	const slides = document.querySelectorAll('.offer__slide'),
-		slider = document.querySelector('.offer__slider'),
-		currentSlide = document.querySelector('#current'),
-		totalSlides = document.querySelector('#total'),
-		prevSlide = document.querySelector('.offer__slider-prev'),
-		nextSlide = document.querySelector('.offer__slider-next'),
-		slidesWrapper = document.querySelector('.offer__slider-wrapper'),
-		slidesField = document.querySelector('.offer__slider-inner'),
+/**
+ * Удаление со строки всех букв
+ * @param {*} string - строка
+ * @returns - строка без букв
+ */
+function withoutLetters(string) {
+	return +string.replace(/\D/g, '');
+}
+
+/**
+ * Модуль слайдера
+ * @param {*} param0 - обьект настроек
+ * @param {*} param0__container - селектор контейнера слайдера
+ * @param {*} param0__slide - селектор слайдов
+	@param {*} param0__nextBtn - селектор кнопки переключения слайда "Вперед"
+	@param {*} param0__prevBtn - селектор кнопки переключения слайда "Назад"
+	@param {*} param0__totalCounter - селектор поля отображения общего количества слайдов
+	@param {*} param0__currentCounter - селектор поля отображения текущего слайда
+	@param {*} param0__wrapper - селектор области слайда (обертка для field)
+	@param {*} param0__field - селектор полосы слайдов (обертка слайдов)
+ */
+function sliders({
+	container,
+	slide,
+	nextBtn,
+	prevBtn,
+	totalCounter,
+	currentCounter,
+	wrapper,
+	field,
+}) {
+	const slides = document.querySelectorAll(slide),
+		slider = document.querySelector(container),
+		currentSlide = document.querySelector(currentCounter),
+		totalSlides = document.querySelector(totalCounter),
+		prevSlide = document.querySelector(prevBtn),
+		nextSlide = document.querySelector(nextBtn),
+		slidesWrapper = document.querySelector(wrapper),
+		slidesField = document.querySelector(field),
 		width = window.getComputedStyle(slidesWrapper).width;
 
 	let thisSlide = 1,
@@ -93,10 +123,6 @@ function sliders() {
 		dots[thisSlide - 1].style.opacity = 1;
 	};
 
-	function withoutLetters(string) {
-		return +string.replace(/\D/g, '');
-	}
-
 	showIndexText(slides.length, totalSlides);
 	showIndexText(thisSlide, currentSlide);
 	nextSlide.addEventListener('click', () => {
@@ -172,4 +198,5 @@ function sliders() {
 	// 	showSlide(++thisSlide);
 	// });
 }
-module.exports = sliders;
+export default sliders;
+export { withoutLetters };

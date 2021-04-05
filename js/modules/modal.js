@@ -1,25 +1,38 @@
-function modal() {
-	const modalsBtn = document.querySelectorAll('[data-modal]'),
-		modal = document.querySelector('.modal');
+/**
+ * Закрытие модального окна
+ * @param {*} modalSelector - селектор модального окна
+ */
+const closeModal = modalSelector => {
+	const modal = document.querySelector(modalSelector);
+	modal.classList.add('hide');
+	modal.classList.remove('show');
+	document.body.style.overflow = '';
+};
 
-	/**
-	 * Закрытие модального окна
-	 */
-	const closeModal = () => {
-		modal.classList.add('hide');
-		modal.classList.remove('show');
-		document.body.style.overflow = '';
+/**
+ * Открытие модального окна
+ * @param {*} modalSelector - селектор модального окна
+ * @param {*} modalTimerId - таймер отложеного запуска модального окна
+ */
+const showModal = (modalSelector, modalTimerId) => {
+	const modal = document.querySelector(modalSelector);
+	modal.classList.add('show');
+	modal.classList.remove('hide');
+	document.body.style.overflow = 'hidden'; //? Запрет прокрутки страницы
+	if (modalTimerId) {
 		clearInterval(modalTimerId);
-	};
+	}
+};
 
-	/**
-	 * Открытие модального окна
-	 */
-	const showModal = () => {
-		modal.classList.add('show');
-		modal.classList.remove('hide');
-		document.body.style.overflow = 'hidden'; //? Запрет прокрутки страницы
-	};
+/**
+ * Модуль модального окна
+ * @param {*} triggerSelector - селектор элемента через который вызывается модальное окно
+ * @param {*} modalSelector - селектор модального окна
+ * @param {*} modalTimerId  - таймер отложеного запуска модального окна
+ */
+function modal(triggerSelector, modalSelector, modalTimerId) {
+	const modalsBtn = document.querySelectorAll(triggerSelector),
+		modal = document.querySelector(modalSelector);
 
 	/**
 	 * Открытие модального окна при скроле
@@ -30,28 +43,26 @@ function modal() {
 			window.pageYOffset + document.documentElement.clientHeight >=
 			document.documentElement.scrollHeight
 		) {
-			showModal();
+			showModal(modalSelector, modalTimerId);
 			window.removeEventListener('scroll', showModalByScrolling);
 		}
 	};
 
-	const modalTimerId = setTimeout(showModal, 20000);
-
 	modalsBtn.forEach(elem => {
-		elem.addEventListener('click', showModal);
+		elem.addEventListener('click', () => showModal(modalSelector, modalTimerId));
 	});
 
 	// Закрытие модального окна при клике мимо него или по кнопке закрытия
 	modal.addEventListener('click', event => {
 		if (event.target === modal || event.target.getAttribute('data-modalclose') == '') {
-			closeModal();
+			closeModal(modalSelector);
 		}
 	});
 
 	// Закрытие модального окна клавишей escape
 	document.addEventListener('keydown', event => {
 		if (modal.classList.contains('show') && event.code === 'Escape') {
-			closeModal();
+			closeModal(modalSelector);
 		}
 	});
 
@@ -59,4 +70,6 @@ function modal() {
 	window.addEventListener('scroll', showModalByScrolling);
 }
 
-module.exports = modal;
+export default modal;
+export { showModal };
+export { closeModal };
