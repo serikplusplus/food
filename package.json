@@ -9,6 +9,8 @@
   "author": "Sergey Skorohod (serikplusplus)",
   "license": "ISC",
   "devDependencies": {
-    "json-server": "^0.16.3"
+    "json-server": "^0.16.3",
+    "webpack": "^5.30.0",
+    "webpack-cli": "^4.6.0"
   }
 }
