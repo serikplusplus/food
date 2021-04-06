@@ -1,16 +1,29 @@
 {
-  "name": "food",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Sergey Skorohod (serikplusplus)",
-  "license": "ISC",
-  "devDependencies": {
-    "json-server": "^0.16.3",
-    "webpack": "^5.30.0",
-    "webpack-cli": "^4.6.0"
-  }
+	"name": "food",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Sergey Skorohod (serikplusplus)",
+	"license": "ISC",
+	"browserslist": [
+		"> 1%"
+	],
+	"devDependencies": {
+		"@babel/cli": "^7.13.14",
+		"@babel/core": "^7.13.14",
+		"@babel/preset-env": "^7.13.12",
+		"babel-loader": "^8.2.2",
+		"core-js": "^2.6.12",
+		"json-server": "^0.16.3",
+		"webpack": "^5.30.0",
+		"webpack-cli": "^4.6.0"
+	},
+	"dependencies": {
+		"@babel/polyfill": "^7.12.1",
+		"es6-promise": "^4.2.8",
+		"nodelist-foreach-polyfill": "^1.2.0"
+	}
 }

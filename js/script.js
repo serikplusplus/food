@@ -1,4 +1,9 @@
 'use strict';
+//подключение полифтилов для промисов
+require('es6-promise').polyfill();
+//Полифил для foreach
+import 'nodelist-foreach-polyfill';
+
 import tabs from './modules/tabs';
 import timer from './modules/timer';
 import modal from './modules/modal';
