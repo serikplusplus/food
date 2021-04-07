@@ -5,7 +5,7 @@ import { getData } from '../services/services';
  */
 function cards() {
 	//Класс создание карточек меню
-	class menuCard {
+	class MenuCard {
 		/**
 		 * Конструктор карточки
 		 * @param {string} subtitle - название
@@ -54,7 +54,7 @@ function cards() {
 	getData('http://localhost:3000/menu').then(data => {
 		//перебор полученого массива от сервера по обьектам с разбиением каждого обьекта на переменные
 		data.forEach(({ img, altimg, title, descr, price }) => {
-			new menuCard(title, descr, price, img, altimg, '.menu .container').pasteItem();
+			new MenuCard(title, descr, price, img, altimg, '.menu .container').pasteItem();
 		});
 	});
 }
