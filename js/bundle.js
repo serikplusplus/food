@@ -88,7 +88,7 @@ function calculator() {
 
   const getInputInformation = selector => {
     const input = document.querySelector(selector);
-    input.addEventListener('input', event => {
+    input.addEventListener('input', () => {
       switch (input.getAttribute('id')) {
         case 'height':
           input.value = height = (0,_sliders__WEBPACK_IMPORTED_MODULE_0__.withoutLetters)(input.value);
@@ -159,7 +159,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function cards() {
   //Класс создание карточек меню
-  class menuCard {
+  class MenuCard {
     /**
      * Конструктор карточки
      * @param {string} subtitle - название
@@ -218,7 +218,7 @@ function cards() {
       descr,
       price
     }) => {
-      new menuCard(title, descr, price, img, altimg, '.menu .container').pasteItem();
+      new MenuCard(title, descr, price, img, altimg, '.menu .container').pasteItem();
     });
   });
 }
@@ -301,7 +301,7 @@ function forms(formSelector, modalTimerId) {
       const formData = new FormData(form); //? Перевод formData > JSON
 
       const json = JSON.stringify(Object.fromEntries(formData.entries()));
-      (0,_services_services__WEBPACK_IMPORTED_MODULE_1__.postData)('http://localhost:3000/requests', json).then(data => {
+      (0,_services_services__WEBPACK_IMPORTED_MODULE_1__.postData)('http://localhost:3000/requests', json).then(() => {
         showModalThanks(message.success);
         statusMessage.remove();
       }).catch(() => {

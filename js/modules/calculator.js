@@ -75,7 +75,7 @@ function calculator() {
 	 */
 	const getInputInformation = selector => {
 		const input = document.querySelector(selector);
-		input.addEventListener('input', event => {
+		input.addEventListener('input', () => {
 			switch (input.getAttribute('id')) {
 				case 'height':
 					input.value = height = withoutLetters(input.value);

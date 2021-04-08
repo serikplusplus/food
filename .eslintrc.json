@@ -19,7 +19,7 @@
 		"react/jsx-uses-react": 1,
 		"react/jsx-uses-vars": "error",
 
-		"linebreak-style": ["error", "windows"],
+		"linebreak-style": ["error", "unix"],
 		"babel/new-cap": 1,
 		"babel/camelcase": 1,
 		"babel/no-invalid-this": 1,

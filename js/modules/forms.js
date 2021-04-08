@@ -66,7 +66,7 @@ function forms(formSelector, modalTimerId) {
 			//? Перевод formData > JSON
 			const json = JSON.stringify(Object.fromEntries(formData.entries()));
 			postData('http://localhost:3000/requests', json)
-				.then(data => {
+				.then(() => {
 					showModalThanks(message.success);
 					statusMessage.remove();
 				})
